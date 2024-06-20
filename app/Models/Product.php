@@ -28,10 +28,10 @@ class Product extends Model
     public static function rules($rquestData =[],$row=[])
     {
         $rules = [
-            'name'              => 'required|max:255|string|unique:products',
+            'name'              => 'required|max:255|string|unique:products,name,NULL,id,category_id,' . $rquestData['category_id']
         ];
         if(!empty($row)){
-            $rules['name'] = 'required|unique:products,name,' . $row->id;
+            $rules['name'] = 'required|unique:products,name,' . $row['id']. ',id,category_id,' . $rquestData['category_id'];
             
         }
         return $rules;
@@ -42,5 +42,9 @@ class Product extends Model
         return [
             
         ];
+    }
+
+    public function getCategory(){
+        return $this->belongsTo(\App\Models\Category::class);
     }
 }

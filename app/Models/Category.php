@@ -31,7 +31,7 @@ class Category extends Model
             'name'              => 'required|max:255|string|unique:categories',
         ];
         if(!empty($row)){
-            $rules['name'] = 'required|unique:categories,name,' . $row->id;
+            $rules['name'] = 'required|unique:categories,name,' . $row['id'];
             
         }
         return $rules;
@@ -43,4 +43,11 @@ class Category extends Model
             
         ];
     }
+
+    public function getProducts(){
+        return $this->hasMany(\App\Models\Product::class);
+
+    }
+
+    
 }

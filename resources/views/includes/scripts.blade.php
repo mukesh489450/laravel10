@@ -4,7 +4,7 @@
 $(".validate").validate({ 
     errorPlacement: function(error, element) {
         if(element.hasClass("select2")){
-            error.insertAfter($(element).parent().find(".select2-selection").after());
+            error.insertAfter($(element).parent().find(".select2-selection").after()).addClass('text-danger');
         }else{
             error.insertAfter(element).addClass('text-danger');
         }
@@ -14,6 +14,17 @@ $(function () {
     $('.select2').select2();
 
 });
+
+$(document).ready(function() {
+    $('form').each(function() {
+        $(this).find('input[type="text"], textarea').on('blur', function() {
+            $(this).val(function(_, value) {
+                return value.replace(/\s+/g, ' ').trim();
+            });
+        });
+    });
+});
+
 function deleteWithSwal(slug) {
     const swalWithBootstrapButtons = Swal.mixin({
     customClass: {

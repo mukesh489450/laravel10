@@ -49,7 +49,8 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label>Price</label>
-                    {!! Form::text('price', null,['placeholder' => 'Price', 'class'=>'form-control','required'=>true]) !!}
+                    {!! Form::text('price', null,['placeholder' => 'Price', 'class'=>'form-control','required'=>true, 'maxlength'=>5, 'oninput' => "this.value=this.value.replace(/[^0-9]/g,'');"]) !!}
+                    
                   </div>
                 </div>
               </div>

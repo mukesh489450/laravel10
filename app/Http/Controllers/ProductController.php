@@ -29,7 +29,7 @@ class ProductController extends Controller
         $title = $this->title;
         $module = $this->module;
         $breadcum = [$this->title=>route($this->module.'.index'),'Listing'=>''];
-        $data = $this->mTable::get();
+        $data = $this->mTable::with('getCategory')->get();
         return view($this->view_folder.'.index',compact('breadcum','module','title','data'));
     }
 
@@ -53,8 +53,13 @@ class ProductController extends Controller
             }
             else
             {
+                //dd($request->all());
                 $row = new $this->mTable;
                 $row->name = $request->name;
+                $row->slug = $request->slug;
+                $row->category_id = $request->category_id;
+                $row->price = $request->price;
+                $row->description = $request->description;
                 $row->save();
                 DB::commit();
                 Session::flash('success', 'Record added successfully');
@@ -76,9 +81,10 @@ class ProductController extends Controller
         $module = $this->module;
         $title = $this->title;
         $breadcum = [$this->title=>route($this->module.'.index'),'Edit'=>''];
-        $row = $this->mTable::whereSlug($slug)->first();
+        $categories = Category::whereStatus('1')->pluck('name','id');
+        $row = $this->mTable::with('getCategory')->whereSlug($slug)->first();
         if($row){
-            return view($this->view_folder.'.edit',compact('breadcum','module','title','row'));
+            return view($this->view_folder.'.edit',compact('breadcum','module','title','row','categories'));
         }else{
             Session::flash('warning', 'Record not found!');
            return redirect()->back();
@@ -87,12 +93,12 @@ class ProductController extends Controller
     }
 
 
-    public function update(Request $request, Category $category){
+    public function update(Request $request, Product $product){
         DB::beginTransaction();
         try
         {
             
-            $validator = Validator::make($request->all(),$this->mTable::rules($request->all(),$category));
+            $validator = Validator::make($request->all(),$this->mTable::rules($request->all(),$product));
             if ($validator->fails()) 
             {
                 return redirect()->back()->withInput()->withErrors($validator->errors());
@@ -100,7 +106,14 @@ class ProductController extends Controller
             else
             {
             
-                $category->update(['name'=>$request->name]);
+                //$product->update(['name'=>$request->name]);
+                $row = $product;
+                $row->name = $request->name;
+                $row->slug = $request->slug;
+                $row->category_id = $request->category_id;
+                $row->price = $request->price;
+                $row->description = $request->description;
+                $row->save();
                 DB::commit();
                 Session::flash('success', 'Record updated successfully');
                 return redirect()->route($this->module.'.index'); 

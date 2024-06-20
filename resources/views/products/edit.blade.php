@@ -33,8 +33,41 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group">
+                    <label>Category</label>
+                    {!! Form::select('category_id',$categories, null,['placeholder' => 'Select','id'=>'product_id', 'class'=>'form-control select2','required'=>true]) !!}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
                     <label>Name</label>
                     {!! Form::text('name',null, ['placeholder' => 'Name', 'required'=>true, 'class'=>'form-control']) !!} 
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Price</label>
+                    {!! Form::text('price', null,['placeholder' => 'Price', 'class'=>'form-control','required'=>true, 'maxlength'=>5, 'oninput' => "this.value=this.value.replace(/[^0-9]/g,'');"]) !!}
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Description</label>
+                    {!! Form::textarea('description',null, ['placeholder' => 'Description', 'required'=>true, 'class'=>'form-control h-134px', 'id'=>'description']) !!} 
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Image</label>
+                    {!! Form::file('image', ['class' => 'form-control', 'required' => true]) !!} 
                   </div>
                 </div>
               </div>
